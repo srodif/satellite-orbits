@@ -22,7 +22,7 @@ def calculate_satellite_parameters():
     cross_sectional_area = float(input("Enter the cross-sectional area of the satellite (default: 10): ") or cross_area)
 
     #Calculations
-    results = calculations(height, mass, drag_coefficient = coefficient, cross_sectional_area = cross_area)
+    results = calculations(height, mass, drag_coefficient, cross_sectional_area)
     gravitational_force = results[4]
     satellite_speed = results[5]
     satellite_period = results[6]
@@ -72,10 +72,10 @@ data.append(calculations(400000, 5, 2.2, 1)) #nanosat
 data.append(calculations(408000, 450000, 2.2, 150)) #ISS
 data.append(calculations(600000, 50, 2.2, 5)) #microsat
 data.append(calculations(800000, 250, 2.2, 7)) #minisat
-data.append(calculations(500000, 500)) 
-data.append(calculations(600000, 650)) #smallsat
-data.append(calculations(781000, 689)) #Iridium (communications)
-data.append(calculations(535000, 12,200)) #Hubble
+data.append(calculations(500000, 500, 2.2, 10)) 
+data.append(calculations(600000, 650, 2.2, 10)) #smallsat
+data.append(calculations(781000, 689, 2.2, 12)) #Iridium (communications)
+data.append(calculations(535000, 12200, 2.2, 20)) #Hubble
 
 
 
