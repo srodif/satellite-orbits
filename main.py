@@ -10,14 +10,10 @@ M = 5.972e24  # Mass of the Earth (kg)
 R = 6371000  # Radius of the Earth (m)
 coefficient = 2.2 #sample drag coefficient of satellite
 cross_area = 10 #sample surface cross sectional area of satellite (m^2)
+data = []
 
 
-
-
-
-
-
-
+#function to enter data, process them, print them and add them to the data table
 def calculate_satellite_parameters():
     # User input
     height = float(input("Enter the height of the satellite (in meters): "))
@@ -26,6 +22,33 @@ def calculate_satellite_parameters():
     cross_sectional_area = float(input("Enter the cross-sectional area of the satellite (default: 10): ") or cross_area)
 
     #Calculations
+    results = calculations(height, mass, drag_coefficient = coefficient, cross_sectional_area = cross_area)
+    gravitational_force = results[4]
+    satellite_speed = results[5]
+    satellite_period = results[6]
+    atmospheric_density = results[7]
+    drag_force = results[8]
+    acceleration_drag = results[9]
+    change_in_altitude = results[10]
+
+    # Print the results and add the data for this satellite
+    print("Gravitational Force: {:.2f} N".format(gravitational_force))
+    print("Satellite Speed: {:.2f} m/s".format(satellite_speed))
+    print("Satellite Period: {:.2f} seconds".format(satellite_period))
+    #print("Atmospheric Density: " + str(atmospheric_density) + " kg/m^3")
+    print("Atmospheric Density: {:.2f} kg/m^3".format(atmospheric_density))
+    print("(" + str(atmospheric_density) + ")")
+    print("Drag Force: {:.2f} N".format(drag_force))
+    print("(" + str(drag_force) + ")")
+    print("Acceleration due to Atmospheric Drag: {:.2f} m/s^2".format(acceleration_drag))
+    print("(" + str(acceleration_drag) + ")")
+    print("Change in Altitude: {:.2f} meters".format(change_in_altitude))
+    data.append((height, mass, drag_coefficient, cross_sectional_area, gravitational_force, satellite_speed, satellite_period, atmospheric_density, drag_force, acceleration_drag, change_in_altitude))
+    return
+
+
+#separate function to process the data
+def calculations(height, mass, drag_coefficient, cross_sectional_area): 
     # Calculate gravitational force 
     gravitational_force = (G * M * mass) / (R + height)**2
     # Calculate satellite speed
@@ -41,21 +64,23 @@ def calculate_satellite_parameters():
     # Calculate change in altitude (assuming no other forces)
     change_in_altitude = -satellite_speed * math.sin(math.pi/2) - (acceleration_drag / (2 * math.pi / satellite_period)) * math.cos(math.pi/2)
 
-    # Print the results
-    print("Gravitational Force: {:.2f} N".format(gravitational_force))
-    print("Satellite Speed: {:.2f} m/s".format(satellite_speed))
-    print("Satellite Period: {:.2f} seconds".format(satellite_period))
-    print("Atmospheric Density: {:.2f} kg/m^3".format(atmospheric_density))
-    print("(" + str(atmospheric_density) + ")")
-    print("Drag Force: {:.2f} N".format(drag_force))
-    print("(" + str(drag_force) + ")")
-    print("Acceleration due to Atmospheric Drag: {:.2f} m/s^2".format(acceleration_drag))
-    print("(" + str(acceleration_drag) + ")")
-    print("Change in Altitude: {:.2f} meters".format(change_in_altitude))
-    
-    return (gravitational_force, satellite_speed, satellite_period, drag_force, acceleration_drag, change_in_altitude)
+    return (height, mass, drag_coefficient, cross_sectional_area, gravitational_force, satellite_speed, satellite_period, atmospheric_density, drag_force, acceleration_drag, change_in_altitude)
+
+
+#sample data entry
+data.append(calculations(400000, 5, 2.2, 1)) #nanosat
+data.append(calculations(408000, 450000, 2.2, 150)) #ISS
+data.append(calculations(600000, 50, 2.2, 5)) #microsat
+data.append(calculations(800000, 250, 2.2, 7)) #minisat
+data.append(calculations(500000, 500)) 
+data.append(calculations(600000, 650)) #smallsat
+data.append(calculations(781000, 689)) #Iridium (communications)
+data.append(calculations(535000, 12,200)) #Hubble
 
 
 
 # Calculate satellite parameters
-parameters = calculate_satellite_parameters()
+#parameters = calculate_satellite_parameters()
+
+print (data)
+
