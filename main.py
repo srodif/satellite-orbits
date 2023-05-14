@@ -77,6 +77,8 @@ data.append(calculations(781000, 689, 2.2, 12)) #Iridium (communications)
 data.append(calculations(535000, 12200, 2.2, 20)) #Hubble
 data.append(calculations(408000, 450000, 2.2, 150)) #ISS
 
+
+#function to create sample graphs
 def make_graphs():
     heights = []
     masses = []
@@ -125,11 +127,31 @@ def make_graphs():
     plt.show()
     
 
-
-# Calculate satellite parameters
-#parameters = calculate_satellite_parameters()
-make_graphs()
-
-print (data)
+#delete data function
+def delete_data():
+    data.clear()
 
 
+#main programm sequence run
+while True:
+    print("Please select an option:")
+    print("1. Enter data, calculate values, and print them")
+    print("2. Print graphs")
+    print("3. Print all data")
+    print("4. Delete data values")
+    print("5. Exit")
+    choice = input("Enter your choice (1-5): ")
+    
+    if choice == "1":
+        calculate_satellite_parameters()
+    elif choice == "2":
+        make_graphs()
+    elif choice == "3":
+        print(data)
+    elif choice == "4":
+        delete_data()
+    elif choice == "5":
+        break
+    else:
+        print("Invalid choice. Please enter a number between 1 and 4.")
+print("Program end")
