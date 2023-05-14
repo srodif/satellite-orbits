@@ -134,6 +134,7 @@ def delete_data():
 
 #main programm sequence run
 while True:
+    print("")
     print("Please select an option:")
     print("1. Enter data, calculate values, and print them")
     print("2. Print graphs")
