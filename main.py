@@ -42,7 +42,7 @@ def calculate_satellite_parameters():
     print("(" + str(drag_force) + ")")
     print("Acceleration due to Atmospheric Drag: {:.2f} m/s^2".format(acceleration_drag))
     print("(" + str(acceleration_drag) + ")")
-    print("Change in Altitude: {:.2f} meters".format(change_in_altitude))
+    print("Change in Altitude: {:.2f} m/s".format(change_in_altitude))
     data.append((height, mass, drag_coefficient, cross_sectional_area, gravitational_force, satellite_speed, satellite_period, atmospheric_density, drag_force, acceleration_drag, change_in_altitude))
     return
 
@@ -69,18 +69,67 @@ def calculations(height, mass, drag_coefficient, cross_sectional_area):
 
 #sample data entry
 data.append(calculations(400000, 5, 2.2, 1)) #nanosat
-data.append(calculations(408000, 450000, 2.2, 150)) #ISS
 data.append(calculations(600000, 50, 2.2, 5)) #microsat
 data.append(calculations(800000, 250, 2.2, 7)) #minisat
-data.append(calculations(500000, 500, 2.2, 10)) 
+data.append(calculations(500000, 500, 2.2, 10))
 data.append(calculations(600000, 650, 2.2, 10)) #smallsat
 data.append(calculations(781000, 689, 2.2, 12)) #Iridium (communications)
 data.append(calculations(535000, 12200, 2.2, 20)) #Hubble
+data.append(calculations(408000, 450000, 2.2, 150)) #ISS
 
+def make_graphs():
+    heights = []
+    masses = []
+    speeds = []
+    periods = []
+    drag_forces = []
+    acceleration_drags = []
+    altitude_changes = []
+    for satellite in data:
+        heights.append(satellite[0])
+        masses.append(satellite[1])
+        speeds.append(satellite[5])
+        periods.append(satellite[6])
+        drag_forces.append(satellite[8])
+        acceleration_drags.append(satellite[9])
+        altitude_changes.append(satellite[10])
+  
+    plt.plot(masses, speeds, 'bo')
+    plt.xlabel('Mass (kg)')
+    plt.ylabel('Speed (m/s)')
+    plt.title('Satellite Speed vs Mass')
+    plt.show()
+
+    plt.plot(heights, speeds, 'go')
+    plt.xlabel('Height (m)')
+    plt.ylabel('Speed (m/s)')
+    plt.title('Satellite Speed vs Orbit Height')
+    plt.show()
+
+    plt.plot(drag_forces, speeds, 'ro')
+    plt.xlabel('Drag force (N)')
+    plt.ylabel('Speed (m/s)')
+    plt.title('Satellite Speed vs Drag force')
+    plt.show()
+
+    plt.plot(drag_forces, heights, 'yo')
+    plt.xlabel('Drag force (N)')
+    plt.ylabel('Height (m)')
+    plt.title('Satellite Height vs Drag force')
+    plt.show()
+
+    plt.plot(altitude_changes, heights, 'yo')
+    plt.xlabel('Altitude change (m/s)')
+    plt.ylabel('Height (m)')
+    plt.title('Satellite Altitude change vs Height')
+    plt.show()
+    
 
 
 # Calculate satellite parameters
 #parameters = calculate_satellite_parameters()
+make_graphs()
 
 print (data)
+
 
