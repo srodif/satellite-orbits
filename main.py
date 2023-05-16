@@ -138,17 +138,10 @@ def calculate_heights(time_values, height, drag_coeff, cross_area, mass):
   
     while heights[i] > 0:
         speed = np.sqrt(G * M / (R + heights[i]))
-        satellite_period = 2 * math.pi * math.sqrt((R + heights[i])**3 / (G * M))
-        #atmospheric_density = 1.225 * math.exp(-heights[i] / 8200)
-        atmospheric_density = 1.3 * math.exp(-heights[i] / 7000)
-        # Calculate drag force
+        atmospheric_density = 1.225 * math.exp(-heights[i] / 8200)
         drag_force = 0.5 * drag_coeff * cross_area * atmospheric_density * speed ** 2
-        # Calculate acceleration due to drag
         acceleration_drag = -drag_force / mass
-        # Calculate change in altitude
         delta_h = -speed * delta_t + 0.5 * acceleration_drag * delta_t ** 2
-        #delta_h = -speed * math.sin(math.pi/2) - (acceleration_drag / (2 * math.pi / satellite_period)) * math.cos(math.pi/2) * delta_t
-        #print((acceleration_drag / (2 * math.pi / satellite_period)) * math.cos(math.pi/2) * delta_t)
 
         # Calculate height
         new_height = heights[i] + delta_h
@@ -161,14 +154,12 @@ def calculate_heights(time_values, height, drag_coeff, cross_area, mass):
 def create_time_graph():
     # Sample time values and altitude values
     time_values = [0]
-    height = 500000
-    drag_coeff = 2.2
-    cross_area = 25
-    mass = 1000
-    
+    height = data[0][0]
+    mass = data[0][1]
+    drag_coeff = data[0][2]
+    cross_area = data[0][3]
     # Calling the function to calculate heights
     heights = calculate_heights(time_values, height, drag_coeff, cross_area, mass)
-    
     # Printing the calculated heights
     for t, h in zip(time_values, heights):
         print("At time", t, "seconds, the height is", h, "meters")
