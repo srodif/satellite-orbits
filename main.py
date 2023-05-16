@@ -1,6 +1,5 @@
-print('Hello World!')
-
 import math
+import time
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -131,28 +130,90 @@ def make_graphs():
 def delete_data():
     data.clear()
 
+def calculate_heights(time_values, height, drag_coeff, cross_area, mass):
+    # Calculate heights for each time value
+    heights = [height]
+    i = 0;
+    delta_t = 0.5 #s
+  
+    while heights[i] > 0:
+        speed = np.sqrt(G * M / (R + heights[i]))
+        satellite_period = 2 * math.pi * math.sqrt((R + heights[i])**3 / (G * M))
+        #atmospheric_density = 1.225 * math.exp(-heights[i] / 8200)
+        atmospheric_density = 1.3 * math.exp(-heights[i] / 7000)
+        # Calculate drag force
+        drag_force = 0.5 * drag_coeff * cross_area * atmospheric_density * speed ** 2
+        # Calculate acceleration due to drag
+        acceleration_drag = -drag_force / mass
+        # Calculate change in altitude
+        delta_h = -speed * delta_t + 0.5 * acceleration_drag * delta_t ** 2
+        #delta_h = -speed * math.sin(math.pi/2) - (acceleration_drag / (2 * math.pi / satellite_period)) * math.cos(math.pi/2) * delta_t
+        #print((acceleration_drag / (2 * math.pi / satellite_period)) * math.cos(math.pi/2) * delta_t)
+
+        # Calculate height
+        new_height = heights[i] + delta_h
+        heights.append(new_height)
+        time_values.append(time_values[i] + delta_t)
+        i = i +1
+
+    return heights
+
+def create_time_graph():
+    # Sample time values and altitude values
+    time_values = [0]
+    height = 500000
+    drag_coeff = 2.2
+    cross_area = 25
+    mass = 1000
+    
+    # Calling the function to calculate heights
+    heights = calculate_heights(time_values, height, drag_coeff, cross_area, mass)
+    
+    # Printing the calculated heights
+    for t, h in zip(time_values, heights):
+        print("At time", t, "seconds, the height is", h, "meters")
+    
+    plt.plot(time_values, heights)
+    plt.xlabel('Time Elapsed (s)')
+    plt.ylabel('Height (m)')
+    plt.title('Satellite Height vs Time')
+    plt.show()
+
+import matplotlib.image as img
+from PIL import Image
+
+img = Image.open("leaOrbit.jpg")
+img.show()
+
+#image = img.imread('leaOrbit.jpg')
+#plt.imshow(image)
+#plt.show()
 
 #main programm sequence run
 while True:
     print("")
+    time.sleep(1)
     print("Please select an option:")
     print("1. Enter data, calculate values, and print them")
     print("2. Print graphs")
-    print("3. Print all data")
-    print("4. Delete data values")
-    print("5. Exit")
-    choice = input("Enter your choice (1-5): ")
+    print("3. Create time - height graph")
+    print("4. Print all data")
+    print("5. Delete data values")
+    print("6. Exit")
+    choice = input("Enter your choice (1-6): ")
     
     if choice == "1":
         calculate_satellite_parameters()
     elif choice == "2":
         make_graphs()
     elif choice == "3":
-        print(data)
+        create_time_graph()
     elif choice == "4":
-        delete_data()
+        print(data)
     elif choice == "5":
+        delete_data()
+    elif choice == "6":
         break
     else:
-        print("Invalid choice. Please enter a number between 1 and 4.")
+        print("Invalid choice. Please enter a number between 1 and 6.")
 print("Program end")
